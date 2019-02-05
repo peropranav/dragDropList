@@ -17,15 +17,13 @@ add_todo_btn.addEventListener('click',function(){
     var remove_btn = document.createElement('button');
 
      //for dragging
-     child_div_list.classList.add('column');
      child_div_list.draggable=true;
 
     child_div_list.classList.add('child_div_list_class');
-    div_btn.classList.add('div_item_class');
-    div_item.classList.add('div_btn_class');
+    div_btn.classList.add('div_btn_class');
+    div_item.classList.add('div_item_class');
     edit_btn.classList.add('edit_btn_class');
     remove_btn.classList.add('remove_btn_class');
-
     
     //edit input
 
@@ -71,9 +69,6 @@ add_todo_btn.addEventListener('click',function(){
     
 
 
-        remove_btn.addEventListener('click',function(){
-            child_div_list.parentNode.removeChild(child_div_list);
-        });
 
     
 list.appendChild(child_div_list);
@@ -88,14 +83,25 @@ edit_btn.appendChild(document.createTextNode('EDIT'));
 remove_btn.appendChild(document.createTextNode('REMOVE'));
 todo_text_field.appendChild(document.createTextNode(todo));    
 addEventsDragAndDrop(child_div_list);
+addBtnListeners(child_div_list);
 });
 
+function addBtnListeners(el)
+{
+console.log(el.lastChild.lastChild);
+
+el.lastChild.lastChild.addEventListener('click',function(){
+
+    el.remove();
+})
+}
 
 function dragStart(e) {
     this.style.opacity = '0.4';
     dragSrcEl = this;
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', this.innerHTML);
+
   };
   
   function dragEnter(e) {
@@ -117,6 +123,7 @@ function dragStart(e) {
     if (dragSrcEl != this) {
       dragSrcEl.innerHTML = this.innerHTML;
       this.innerHTML = e.dataTransfer.getData('text/html');
+      addBtnListeners(this);
     }
     return false;
   }
